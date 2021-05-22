@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
@@ -8,19 +9,29 @@ import DetailsFoodScreen, {
 } from '../screens/delivery/DetailsFoodScreen';
 import CartScreen from '../screens/delivery/CartScreen';
 import DefaultHeaderButton from '../components/commons/DefaultHeaderButton';
-import { Platform } from 'react-native';
+import Colors from '../constants/Colors';
 
 const Stack = createStackNavigator();
 
 const MenuNavigation = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleStyle: {
+          fontFamily: 'Mont-bold'
+        },
+        headerStyle: {
+          backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : ''
+        },
+        headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor
+      }}
+    >
       <Stack.Screen
         name="Menu"
         component={MenuOverviewScreen}
         options={({ navigation }) => ({
           headerTitle: 'Cardápio Rockets',
-          headerRight: () => (
+          headerRight: (drawerConfig) => (
             <HeaderButtons HeaderButtonComponent={DefaultHeaderButton}>
               <Item
                 title="Cart"
@@ -37,7 +48,9 @@ const MenuNavigation = () => {
         component={DetailsFoodScreen}
         options={DetailsScreenOptions}
       />
-      <Stack.Screen name="Cart" component={CartScreen} />
+      <Stack.Screen name="Cart" component={CartScreen} options={{
+        headerTitle: 'Sacola'
+      }}/>
     </Stack.Navigator>
   );
 };

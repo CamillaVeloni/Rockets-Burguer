@@ -10,7 +10,7 @@ const DefaultHeaderBtn = (props) => {
     <HeaderButton
       {...props}
       IconComponent={Ionicons}
-      color='black'
+      color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
     />
   );
 };

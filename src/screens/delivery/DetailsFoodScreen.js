@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, Platform, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -35,7 +42,7 @@ const DetailsFoodScreen = ({ route }) => {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: selectedFood.imageUrl }} />
+        <Image style={styles.image} source={{ uri: selectedFood.imageUrl }} borderRadius={20} />
       </View>
       <View style={styles.summaryContainer}>
         <Text style={styles.defaultText}>{selectedFood.title}</Text>
@@ -73,7 +80,9 @@ const DetailsFoodScreen = ({ route }) => {
         <DefaultButton
           styleText={styles.cartTextButton}
           style={styles.cartButton}
-          onPress={() => dispatch(cartActions.addToCart(selectedFood, +totalItem, +sum))}
+          onPress={() =>
+            dispatch(cartActions.addToCart(selectedFood, +totalItem, +sum))
+          }
         >
           Adicionar no carrinho
         </DefaultButton>
