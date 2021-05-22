@@ -1,14 +1,16 @@
 import React from 'react'; 
-import { View, Text, StyleSheet } from 'react-native'; 
+import { StyleSheet } from 'react-native'; 
+import { useSelector } from 'react-redux';
+
+import MenuList from '../../components/delivery/MenuList';
 
 // Tela com cardapio da lanchonete
-const MenuOverviewScreen = () => { 
-    return ( 
-     <View> 
-         <Text>Cardapio da lanchonete</Text>
-     </View>
-)};
+const MenuOverviewScreen = ({ navigation }) => { 
+    const availableMenu = useSelector(({ menu }) => menu.availableMenu);
 
-const styles = StyleSheet.create({});
+    return ( 
+     <MenuList menu={availableMenu} navigation={navigation} />
+    );
+};
 
 export default MenuOverviewScreen;

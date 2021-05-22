@@ -31,24 +31,31 @@ const MENU = [
   ),
   new Food(
     'a5',
-    'Refrigerante Coca-Cola',
+    'Coca-Cola',
     'https://images.unsplash.com/photo-1619737553960-38d6f34bb37a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80',
     'Lata - 350ml',
     6
   ),
   new Food(
     'a6',
-    'Refrigerante Pepsi',
+    'Pepsi',
     'https://images.unsplash.com/photo-1502389743708-d00f658638bd?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80',
     'Lata - 350ml',
     6
   ),
   new Food(
-    'a6',
-    'Refrigerante Sprite',
+    'a7',
+    'Sprite',
     'https://images.unsplash.com/photo-1592860893757-84536a1c9b82?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80',
     'Lata - 350ml',
     6
+  ),
+  new Food(
+    'a7',
+    'Sprite Diet',
+    'https://images.unsplash.com/photo-1592860893757-84536a1c9b82?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80',
+    'Lata - 350ml',
+    7
   ),
 ];
 
