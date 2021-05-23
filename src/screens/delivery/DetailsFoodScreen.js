@@ -78,7 +78,6 @@ const DetailsFoodScreen = ({ route }) => {
           <Text style={styles.defaultText}>{sum.toFixed(2)} R$</Text>
         </View>
         <DefaultButton
-          styleText={styles.cartTextButton}
           style={styles.cartButton}
           onPress={() =>
             dispatch(cartActions.addToCart(selectedFood, +totalItem, +sum))
@@ -143,9 +142,6 @@ const styles = StyleSheet.create({
   time: {
     fontFamily: 'Mont-bold',
     color: 'black',
-  },
-  cartTextButton: {
-    color: 'white',
   },
   cartButton: {
     paddingVertical: 10,

@@ -1,5 +1,5 @@
 import CartItem from '../../models/cart-item';
-import { ADD_TO_CART } from '../actions/cart';
+import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions/cart';
 
 const INITIAL_STATE = {
     items: {},
@@ -18,6 +18,7 @@ export default (state = INITIAL_STATE, action) => {
 
             const newItemCart = new CartItem(
                 food.title,
+                food.imageUrl,
                 food.price,
                 totalItem,
                 sum
@@ -28,6 +29,16 @@ export default (state = INITIAL_STATE, action) => {
                 totalAmount: newTotalAmount + sum // ou o preço total do carrinho ou o preço total menos o item - diminuindo porque
                 // um novo preço final do item veio
             };
+        case REMOVE_FROM_CART: 
+            const updatedCart = { ...state.items };
+            const sumSelectedItem = updatedCart[action.payload].sum;
+            delete updatedCart[action.payload];
+
+            return {
+                ...state,
+                items: updatedCart,
+                totalAmount: Math.abs(state.totalAmount - sumSelectedItem),
+            }
         default:
             return state;
     }
