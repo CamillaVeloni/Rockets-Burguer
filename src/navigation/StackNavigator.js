@@ -8,12 +8,14 @@ import DetailsFoodScreen, {
   screenOptions as DetailsScreenOptions,
 } from '../screens/delivery/DetailsFoodScreen';
 import CartScreen from '../screens/delivery/CartScreen';
+import OrdersScreen from '../screens/delivery/OrdersScreen';
+
 import DefaultHeaderButton from '../components/commons/DefaultHeaderButton';
 import Colors from '../constants/Colors';
 
 const Stack = createStackNavigator();
 
-const MenuNavigation = () => {
+const MenuNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -55,4 +57,12 @@ const MenuNavigation = () => {
   );
 };
 
-export default MenuNavigation;
+const UserNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Orders" component={OrdersScreen} />
+    </Stack.Navigator>
+  )
+}
+
+export { MenuNavigator, UserNavigator };

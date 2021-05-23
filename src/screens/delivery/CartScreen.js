@@ -3,6 +3,7 @@ import { View, StyleSheet, FlatList, Text, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import * as cartActions from '../../store/actions/cart';
+import * as orderActions from '../../store/actions/order';
 import CartCardItem from '../../components/delivery/CartCardItem';
 import DefaultButton from '../../components/commons/DefaultButton';
 
@@ -21,14 +22,14 @@ const CartScreen = () => {
         sum: items[key].sum,
       });
     }
-    return cartAsArray.sort((a, b) => a.foodId > b.foodId ? 1 : -1);
+    return cartAsArray.sort((a, b) => (a.foodId > b.foodId ? 1 : -1));
   });
 
   const dispatch = useDispatch();
 
-  const onRemoveHandler = id => {
-      dispatch(cartActions.removeFromCart(id))
-  }
+  const onRemoveHandler = (id) => {
+    dispatch(cartActions.removeFromCart(id));
+  };
 
   return (
     <View style={styles.container}>
@@ -52,9 +53,10 @@ const CartScreen = () => {
           <Text style={styles.priceOrder}>{cartTotalAmount.toFixed(2)} R$</Text>
         </Text>
         <DefaultButton
-            disabled={cartItems.length === 0}
-            style={styles.buttonStyle}
-            styleText={styles.buttonTextStyle}
+          disabled={cartItems.length === 0}
+          onPress={() => dispatch(orderActions.addNewOrder('u1', cartItems, cartTotalAmount))}
+          style={styles.buttonStyle}
+          styleText={styles.buttonTextStyle}
         >
           Fazer Pedido
         </DefaultButton>

@@ -5,7 +5,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 import RootReducer from './store/';
-import RootNavigation from './navigation/RootNavigation';
+import RootNavigator from './navigation/RootNavigator';
 
 const store = createStore(RootReducer);
 
@@ -20,7 +20,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <RootNavigation />
+      <RootNavigator />
     </Provider>
   );
 }

@@ -1,5 +1,6 @@
 import CartItem from '../../models/cart-item';
 import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions/cart';
+import { ADD_NEW_ORDER } from '../actions/order';
 
 const INITIAL_STATE = {
     items: {},
@@ -39,6 +40,8 @@ export default (state = INITIAL_STATE, action) => {
                 items: updatedCart,
                 totalAmount: Math.abs(state.totalAmount - sumSelectedItem),
             }
+        case ADD_NEW_ORDER: 
+            return INITIAL_STATE;
         default:
             return state;
     }

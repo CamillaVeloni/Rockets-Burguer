@@ -1,11 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
-import MenuNavigation from './MenuNavigation';
+import DeliveryNavigator from './DeliveryNavigator';
+
 const RootNavigation = () => {
   return (
     <NavigationContainer>
-      <MenuNavigation />
+      <DeliveryNavigator />
     </NavigationContainer>
   );
 };
