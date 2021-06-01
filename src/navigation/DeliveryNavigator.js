@@ -4,13 +4,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
-import { MenuNavigator, UserNavigator } from './StackNavigator';
+import { MenuNavigator, UserNavigator, AdminNavigator } from './StackNavigator';
 
 const Tab = createBottomTabNavigator();
 
 // Tab de Menu e Tab 'Meus Pedidos'
 const DeliveryNavigator = () => {
-  
+  // Dummy para administrador ~~ só para verificar as funcionalidades do admin
+  // Obs: depois usar o auth
+  const admin = true;
+
   return (
     <Tab.Navigator
       initialRouteName="Menu"
@@ -39,13 +42,32 @@ const DeliveryNavigator = () => {
           title: 'Pedidos',
           tabBarIcon: (props) => (
             <Ionicons
-              name={Platform.OS === 'android' ? 'md-document-text' : 'ios-document-text'}
+              name={
+                Platform.OS === 'android'
+                  ? 'md-document-text'
+                  : 'ios-document-text'
+              }
               size={props.size}
               color={props.color}
             />
           ),
         }}
       />
+      {admin && (
+        <Tab.Screen
+          name="Dashboard"
+          component={AdminNavigator}
+          options={{
+            tabBarIcon: (props) => (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+                size={props.size}
+                color={props.color}
+              />
+            ),
+          }}
+        />
+      )}
     </Tab.Navigator>
   );
 };

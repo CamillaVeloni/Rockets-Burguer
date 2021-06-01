@@ -9,6 +9,7 @@ import DetailsFoodScreen, {
 } from '../screens/delivery/DetailsFoodScreen';
 import CartScreen from '../screens/delivery/CartScreen';
 import OrdersScreen from '../screens/delivery/OrdersScreen';
+import AdminScreen from '../screens/admin/AdminScreen';
 
 import DefaultHeaderButton from '../components/commons/DefaultHeaderButton';
 import Colors from '../constants/Colors';
@@ -70,4 +71,12 @@ const UserNavigator = () => {
   )
 }
 
-export { MenuNavigator, UserNavigator };
+const AdminNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={defaultScreenOptions}>
+      <Stack.Screen name="Dashboard" component={AdminScreen}/>
+    </Stack.Navigator>
+  )
+}
+
+export { MenuNavigator, UserNavigator, AdminNavigator };
