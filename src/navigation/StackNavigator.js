@@ -15,25 +15,28 @@ import Colors from '../constants/Colors';
 
 const Stack = createStackNavigator();
 
+const defaultScreenOptions = {
+  headerTitleStyle: {
+    fontFamily: 'Mont-bold',
+    fontSize: 20,
+  },
+  headerStyle: {
+    backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : ''
+  },
+  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor,
+}
+
 const MenuNavigator = () => {
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerTitleStyle: {
-          fontFamily: 'Mont-bold'
-        },
-        headerStyle: {
-          backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : ''
-        },
-        headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor
-      }}
+      screenOptions={defaultScreenOptions}
     >
       <Stack.Screen
         name="Menu"
         component={MenuOverviewScreen}
         options={({ navigation }) => ({
           headerTitle: 'Cardápio Rockets',
-          headerRight: (drawerConfig) => (
+          headerRight: () => (
             <HeaderButtons HeaderButtonComponent={DefaultHeaderButton}>
               <Item
                 title="Cart"
@@ -59,8 +62,10 @@ const MenuNavigator = () => {
 
 const UserNavigator = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Orders" component={OrdersScreen} />
+    <Stack.Navigator screenOptions={defaultScreenOptions}>
+      <Stack.Screen name="Orders" component={OrdersScreen} options={{
+        headerTitle: 'Meus Pedidos'
+      }} />
     </Stack.Navigator>
   )
 }

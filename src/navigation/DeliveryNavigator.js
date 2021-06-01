@@ -8,7 +8,9 @@ import { MenuNavigator, UserNavigator } from './StackNavigator';
 
 const Tab = createBottomTabNavigator();
 
+// Tab de Menu e Tab 'Meus Pedidos'
 const DeliveryNavigator = () => {
+  
   return (
     <Tab.Navigator
       initialRouteName="Menu"

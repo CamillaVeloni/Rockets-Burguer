@@ -43,6 +43,7 @@ const CartScreen = () => {
             image={item.foodImage}
             quantity={item.quantity}
             sum={item.sum}
+            deletable
             onDeletePress={onRemoveHandler.bind(this, item.foodId)}
           />
         )}
