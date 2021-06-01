@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import DefaultButton from '../commons/DefaultButton';
 import Colors from '../../constants/Colors';
 
-const MenuItemCard = ({ image, title, price, onDetailPress, onCartPress }) => {
+const MenuItemCard = ({ image, title, price, onDetailPress, children }) => {
   return (
     <View style={styles.gridContainer}>
       <TouchableOpacity onPress={onDetailPress}> 
@@ -28,13 +28,7 @@ const MenuItemCard = ({ image, title, price, onDetailPress, onCartPress }) => {
       </TouchableOpacity>
         <View style={styles.footer}>
           <Text style={styles.price}>{price.toFixed(2)} R$</Text>
-          <DefaultButton onPress={onCartPress}>
-            <Ionicons
-              name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
-              size={20}
-              color="white"
-            />
-          </DefaultButton>
+          {children}
         </View>
     </View>
   );

@@ -60,7 +60,7 @@ const DeliveryNavigator = () => {
           options={{
             tabBarIcon: (props) => (
               <Ionicons
-                name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+                name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
                 size={props.size}
                 color={props.color}
               />

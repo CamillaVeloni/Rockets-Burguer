@@ -13,6 +13,7 @@ import AdminScreen from '../screens/admin/AdminScreen';
 
 import DefaultHeaderButton from '../components/commons/DefaultHeaderButton';
 import Colors from '../constants/Colors';
+import EditItemScreen from '../screens/admin/EditItemScreen';
 
 const Stack = createStackNavigator();
 
@@ -71,10 +72,22 @@ const UserNavigator = () => {
   )
 }
 
-const AdminNavigator = () => {
+const AdminNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={defaultScreenOptions}>
-      <Stack.Screen name="Dashboard" component={AdminScreen}/>
+      <Stack.Screen name="Dashboard" component={AdminScreen} options={{
+        headerRight: () => (
+          <HeaderButtons HeaderButtonComponent={DefaultHeaderButton}>
+            <Item
+              title="Create"
+              iconSize={23}
+              iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+              onPress={() => navigation.navigate('EditItem')}
+            />
+          </HeaderButtons>
+        )
+      }}/>
+      <Stack.Screen name="EditItem" component={EditItemScreen} />
     </Stack.Navigator>
   )
 }
