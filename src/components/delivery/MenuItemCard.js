@@ -4,17 +4,13 @@ import {
   Text,
   StyleSheet,
   Image,
-  Platform,
   TouchableOpacity,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import DefaultButton from '../commons/DefaultButton';
-import Colors from '../../constants/Colors';
 
-const MenuItemCard = ({ image, title, price, onDetailPress, children }) => {
+const MenuItemCard = ({ image, title, price, onSelected, children }) => {
   return (
     <View style={styles.gridContainer}>
-      <TouchableOpacity onPress={onDetailPress}> 
+      <TouchableOpacity onPress={onSelected}>
         <View style={styles.header}>
           <Image
             style={styles.image}
@@ -23,13 +19,14 @@ const MenuItemCard = ({ image, title, price, onDetailPress, children }) => {
           />
         </View>
         <View style={styles.body}>
-          <Text style={styles.title} numberOfLines={1}>{title}</Text>
+          <Text style={styles.title} numberOfLines={1}>
+            {title}
+          </Text>
         </View>
       </TouchableOpacity>
-        <View style={styles.footer}>
-          <Text style={styles.price}>{price.toFixed(2)} R$</Text>
-          {children}
-        </View>
+      <View style={styles.footer}>
+        {children}
+      </View>
     </View>
   );
 };
@@ -65,7 +62,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: 'Mont-bold',
-    fontSize: 14
+    fontSize: 14,
   },
 });
 
