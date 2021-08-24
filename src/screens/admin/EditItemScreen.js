@@ -89,11 +89,10 @@ const EditItemScreen = ({ navigation }) => {
 };
 
 export const screenOptions = ({ route }) => {
-  //  const title = route.params.itemId ? 'Editar' : 'Criar'; // Verificando existe o id para mostrar titulo dinamico
-  console.log(route)
+  const title = !!route.params ? 'Editar' : 'Criar'; // Verificando existe o id para mostrar titulo dinamico
 
   return {
-    headerTitle: `Produto`,
+    headerTitle: `${title} Item`,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={DefaultHeaderBtn}>
         <Item
