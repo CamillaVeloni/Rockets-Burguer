@@ -1,10 +1,10 @@
-export const ADD_ITEM = 'addItem';
+export const CREATE_ITEM = 'createItem';
+export const UPDATE_ITEM = 'updateItem';
 export const DELETE_ITEM = 'deleteItem';
-export const UPDATE_ITEM = 'editItem';
 
-export const addItem = (title, imageUrl, description, price) => {
+export const createItem = (title, imageUrl, description, price) => {
   return {
-    type: ADD_ITEM,
+    type: CREATE_ITEM,
     payload: {
       title,
       imageUrl,
@@ -14,21 +14,21 @@ export const addItem = (title, imageUrl, description, price) => {
   };
 };
 
-export const editItem = () => {
-    return {
-        type: UPDATE_ITEM,
-        payload: {
-            id,
-            title,
-            imageUrl,
-            description,
-        }
-    }
-}
+export const updateItem = (id, title, imageUrl, description) => {
+  return {
+    type: UPDATE_ITEM,
+    payload: {
+      id,
+      title,
+      imageUrl,
+      description,
+    },
+  };
+};
 
 export const deleteItem = (id) => {
   return {
     type: DELETE_ITEM,
-    payload: id
-  }
-}
+    payload: id,
+  };
+};

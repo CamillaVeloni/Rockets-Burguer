@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import * as menuActions from '../../store/actions/menu';
 import DefaultHeaderBtn from '../../components/commons/DefaultHeaderButton';
@@ -18,30 +18,61 @@ const IMAGEURL = 'imageUrl';
 const DESCRIPTION = 'description';
 const PRICE = 'price';
 
-const EditItemScreen = ({ navigation }) => {
+const EditItemScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
 
+  const itemId = route.params?.itemId ?? null; // pegando id passado pelo adminScreen
+  const selectedItem = useSelector(({ menu }) =>
+    menu.availableMenu.find((item) => item.id === itemId)
+  );
+
   const [form, setForm] = useState({
-    title: '',
-    imageUrl: '',
-    description: '',
+    title: selectedItem?.title ?? '',
+    imageUrl: selectedItem?.imageUrl ?? '',
+    description: selectedItem?.description ?? '',
     price: '',
   });
 
-  /* const savingHandler = useCallback(() => {
-    dispatch(
-      menuActions.addItem(
-        form.title,
-        form.imageUrl,
-        form.description,
-        form.price
-      )
-    );
-  }, [dispatch, form]);
+  const submitHandler = useCallback(() => {
+    if (selectedItem) {
+      // Editar item do cardapio
+      dispatch(
+        menuActions.updateItem(
+          itemId,
+          form.title,
+          form.imageUrl,
+          form.description
+        )
+      );
+    } else {
+      dispatch(
+        menuActions.createItem(
+          form.title,
+          form.imageUrl,
+          form.description,
+          +form.price
+        )
+      );
+    }
+  }, [form, itemId, dispatch]);
 
   useEffect(() => {
-    navigation.setParams({ save: savingHandler });
-  }, [savingHandler]); */
+    // criando options dinamicamente
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={DefaultHeaderBtn}>
+          <Item
+            title="Save"
+            iconSize={23}
+            iconName={
+              Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
+            }
+            onPress={submitHandler}
+          />
+        </HeaderButtons>
+      ),
+    });
+  }, [submitHandler]);
 
   const inputHandler = (value, name) => {
     setForm((prevState) => ({
@@ -76,33 +107,26 @@ const EditItemScreen = ({ navigation }) => {
           value={form.description}
         />
       </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Preço do produto:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(newValue) => inputHandler(newValue, PRICE)}
-          value={form.price}
-        />
-      </View>
+      {!selectedItem && (
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Preço do produto:</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            onChangeText={(newValue) => inputHandler(newValue, PRICE)}
+            value={form.price}
+          />
+        </View>
+      )}
     </ScrollView>
   );
 };
 
 export const screenOptions = ({ route }) => {
-  const title = !!route.params ? 'Editar' : 'Criar'; // Verificando existe o id para mostrar titulo dinamico
+  const title = route.params?.itemId ? 'Editar' : 'Criar'; // Verificando existe o id para mostrar titulo dinamico
 
   return {
     headerTitle: `${title} Item`,
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={DefaultHeaderBtn}>
-        <Item
-          title="Save"
-          iconSize={23}
-          iconName={Platform.OS === 'android' ? 'md-save' : 'ios-save'}
-          onPress={() => {}}
-        />
-      </HeaderButtons>
-    ),
   };
 };
 

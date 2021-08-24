@@ -1,6 +1,6 @@
 import MENU from '../../data/dummy-data';
 import Food from '../../models/Food';
-import { ADD_ITEM, UPDATE_ITEM, DELETE_ITEM } from '../actions/menu';
+import { CREATE_ITEM, DELETE_ITEM, UPDATE_ITEM } from '../actions/menu';
 
 const INITIAL_STATE = {
   availableMenu: MENU,
@@ -8,36 +8,36 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    /*         case ADD_ITEM:
-            const newItem = new Food(
-                new Date().toString(),
-                action.payload.title,
-                action.payload.imageUrl,
-                action.payload.description,
-                action.payload.price,
-            )
+    case CREATE_ITEM:
+      const newItem = new Food(
+        new Date().toString(),
+        action.payload.title,
+        action.payload.imageUrl,
+        action.payload.description,
+        action.payload.price
+      );
+      return {
+        ...state,
+        availableMenu: state.availableMenu.concat(newItem),
+      };
+    case UPDATE_ITEM:
+      const updatedMenu = [...state.availableMenu];
+      const indexItem = updatedMenu.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      const updatedItem = new Food(
+        action.payload.id,
+        action.payload.title,
+        action.payload.imageUrl,
+        action.payload.description,
+        updatedMenu[indexItem].price,
+      );
+      updatedMenu[indexItem] = updatedItem;
 
-            return {
-                ...state,
-                availableMenu: state.availableMenu.concat(newItem),
-            }
-        case UPDATE_ITEM: 
-            const indexItem = state.availableMenu.findIndex((item) => item.id === action.payload);
-
-            const editedItem = new Food(
-                action.payload,
-                action.payload.title,
-                action.payload.imageUrl,
-                action.payload.description,
-                state.availableMenu[indexItem].price
-            )
-            const updatedAvailableMenu = [...state.availableMenu];
-            updatedAvailableMenu[action.payload] = editedItem;
-            
-            return {
-                ...state,
-                availableMenu: updatedAvailableMenu
-            } */
+      return {
+        ...state,
+        availableMenu: updatedMenu,
+      }
     case DELETE_ITEM:
       return {
         ...state,

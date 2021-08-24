@@ -1,6 +1,6 @@
 import React from 'react';
 import { CommonActions } from '@react-navigation/native';
-import { FlatList, Platform } from 'react-native';
+import { Alert, FlatList, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -17,6 +17,12 @@ const MenuEdit = ({ navigation }) => {
       CommonActions.navigate('EditItem', { itemId: id })
     );
   };
+  const deleteItemHandler = (id) => {
+    Alert.alert('Você tem certeza?', 'Você realmente quer deletar esse item do cardápio?', [
+      { text: 'Não', style: 'default' },
+      { text: 'Sim', style: 'destructive', onPress: () => dispatch(deleteItem(id))}
+    ])
+  }
 
   return (
     <FlatList
@@ -47,9 +53,7 @@ const MenuEdit = ({ navigation }) => {
             />
           </DefaultButton>
           <DefaultButton
-            onPress={() => {
-              dispatch(deleteItem(item.id));
-            }}
+            onPress={deleteItemHandler.bind(this, item.id)}
             style={{ backgroundColor: 'red' }}
           >
             <Ionicons
