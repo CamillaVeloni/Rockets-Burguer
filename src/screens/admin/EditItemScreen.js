@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -33,6 +34,10 @@ const EditItemScreen = ({ route, navigation }) => {
     price: '',
   });
 
+  const ref_inputUrl = useRef();
+  const ref_inputDescription = useRef();
+  const ref_inputPrice = useRef();
+
   const submitHandler = useCallback(() => {
     if (selectedItem) {
       // Editar item do cardapio
@@ -54,6 +59,7 @@ const EditItemScreen = ({ route, navigation }) => {
         )
       );
     }
+    navigation.dispatch(CommonActions.goBack());
   }, [form, itemId, dispatch]);
 
   useEffect(() => {
@@ -87,7 +93,11 @@ const EditItemScreen = ({ route, navigation }) => {
         <Text style={styles.label}>Título do produto:</Text>
         <TextInput
           style={styles.input}
+          autoCorrect={false}
+          returnKeyType="next"
+          blurOnSubmit={false}
           onChangeText={(newValue) => inputHandler(newValue, TITLE)}
+          onSubmitEditing={() => ref_inputUrl.current.focus()}
           value={form.title}
         />
       </View>
@@ -95,7 +105,12 @@ const EditItemScreen = ({ route, navigation }) => {
         <Text style={styles.label}>Url do produto:</Text>
         <TextInput
           style={styles.input}
+          autoCorrect={false}
+          returnKeyType="next"
+          blurOnSubmit={false}
           onChangeText={(newValue) => inputHandler(newValue, IMAGEURL)}
+          ref={ref_inputUrl}
+          onSubmitEditing={() => ref_inputDescription.current.focus()}
           value={form.imageUrl}
         />
       </View>
@@ -103,7 +118,13 @@ const EditItemScreen = ({ route, navigation }) => {
         <Text style={styles.label}>Descrição do produto:</Text>
         <TextInput
           style={styles.input}
+          returnKeyType="next"
           onChangeText={(newValue) => inputHandler(newValue, DESCRIPTION)}
+          ref={ref_inputDescription}
+          onSubmitEditing={() => {
+            if(selectedItem) return;
+            ref_inputPrice.current.focus();
+          }}
           value={form.description}
         />
       </View>
@@ -112,8 +133,9 @@ const EditItemScreen = ({ route, navigation }) => {
           <Text style={styles.label}>Preço do produto:</Text>
           <TextInput
             style={styles.input}
-            keyboardType="numeric"
+            keyboardType="decimal-pad"
             onChangeText={(newValue) => inputHandler(newValue, PRICE)}
+            ref={ref_inputPrice}
             value={form.price}
           />
         </View>
