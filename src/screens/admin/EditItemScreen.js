@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useReducer } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import {
   View,
   Text,
@@ -76,18 +76,21 @@ const EditItemScreen = ({ route, navigation }) => {
   });
 
   // Handler para os inputs
-  const inputHandler = (input, text) => {
-    let isValid = false;
-    if (text.trim().length > 0) {
-      isValid = true;
-    }
-    formDispatch({ type: FORM_UPDATE, value: text, isValid, input });
-  };
+  const inputHandler = useCallback(
+    (inputIdentifier, inputValue, isInputValid) => {
+      formDispatch({
+        type: FORM_UPDATE,
+        value: inputValue,
+        isValid: isInputValid,
+        input: inputIdentifier,
+      });
+    },
+    [formDispatch]
+  );
 
   // Referencias do input (usado no onSubmitEditing)
   const ref_inputUrl = useRef();
   const ref_inputDescription = useRef();
-  const ref_inputPrice = useRef();
 
   // Handler usado no useEffect para dispachar criar ou editar item
   const submitHandler = useCallback(() => {
@@ -142,108 +145,58 @@ const EditItemScreen = ({ route, navigation }) => {
   }, [submitHandler]);
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Título do produto:</Text>
-        <TextInput
-          style={styles.input}
-          autoCorrect={false}
-          returnKeyType="next"
-          blurOnSubmit={false}
-          onChangeText={inputHandler.bind(this, TITLE)}
-          onSubmitEditing={() => ref_inputUrl.current.focus()}
-          value={formState.inputValues.title}
-        />
-        {!formState.inputValidities.title && (
-          <Text>Por favor, digite um titulo válido!</Text>
-        )}
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Url do produto:</Text>
-        <TextInput
-          style={styles.input}
-          autoCorrect={false}
-          returnKeyType="next"
-          blurOnSubmit={false}
-          onChangeText={inputHandler.bind(this, IMAGEURL)}
-          ref={ref_inputUrl}
-          onSubmitEditing={() => ref_inputDescription.current.focus()}
-          value={formState.inputValues.imageUrl}
-        />
-        {!formState.inputValidities.imageUrl && (
-          <Text>Por favor, digite uma url válida!</Text>
-        )}
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Descrição do produto:</Text>
-        <TextInput
-          style={styles.input}
-          returnKeyType="next"
-          onChangeText={inputHandler.bind(this, DESCRIPTION)}
-          blurOnSubmit={false}
-          ref={ref_inputDescription}
-          onSubmitEditing={() => {
-            if (selectedItem) return;
-            ref_inputPrice.current.focus();
-          }}
-          value={formState.inputValues.description}
-        />
-        {!formState.inputValidities.description && (
-          <Text>Por favor, digite uma descrição válida!</Text>
-        )}
-      </View>
-      {!selectedItem && (
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Preço do produto:</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="decimal-pad"
-            onChangeText={inputHandler.bind(this, PRICE)}
-            ref={ref_inputPrice}
-            value={formState.inputValues.price}
-          />
-          {!formState.inputValidities.price && (
-            <Text>Por favor, digite um preço válido!</Text>
-          )}
-        </View>
-      )}
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Input
+        id={TITLE}
         autoCorrect={false}
         returnKeyType="next"
-        blurOnSubmit={false}
-        //onSubmitEditing={() => ref_inputUrl.current.focus()}
         label="Digite o titulo do item:"
         errorText="Por favor, digite um titulo válido!"
+        onInputChange={inputHandler}
+        onSubmitEditing={() => ref_inputUrl.current.focus()}
+        blurOnSubmit={false}
+        initialValue={selectedItem?.title ?? ''}
+        initiallyValid={!!selectedItem}
+        required
       />
       <Input
-        autoCorrect={false}
-        returnKeyType="next"
-        blurOnSubmit={false}
+        id={IMAGEURL}
         ref={ref_inputUrl}
         autoCorrect={false}
-        //onSubmitEditing={() => ref_inputDescription.current.focus()}
+        returnKeyType="next"
         label="Digite o url do item:"
         errorText="Por favor, digite um url válido!"
+        onInputChange={inputHandler}
+        onSubmitEditing={() => ref_inputDescription.current.focus()}
+        blurOnSubmit={false}
+        initialValue={selectedItem?.imageUrl ?? ''}
+        initiallyValid={!!selectedItem}
+        required
       />
       <Input
-        returnKeyType="next"
+        id={DESCRIPTION}
         ref={ref_inputDescription}
-        blurOnSubmit={false}
-        /* onSubmitEditing={() => {
-          if (selectedItem) return;
-          ref_inputPrice.current.focus();
-        }} */
         multiline
         numberOfLines={3}
         label="Digite a descrição do item:"
         errorText="Por favor, digite uma descrição válida!"
+        onInputChange={inputHandler}
+        initialValue={selectedItem?.description ?? ''}
+        initiallyValid={!!selectedItem}
+        required
+        minLength={5}
       />
-      <Input
-        keyboardType="decimal-pad"
-        ref={ref_inputPrice}
-        label="Digite o preço do item:"
-        errorText="Por favor, digite um preço válido!"
-      />
+      {!selectedItem && (
+        <Input
+          id={PRICE}
+          keyboardType="decimal-pad"
+          label="Digite o preço do item:"
+          errorText="Por favor, digite um preço válido!"
+          onInputChange={inputHandler}
+          required
+          min={0.1}
+        />
+      )}
     </ScrollView>
   );
 };
@@ -260,19 +213,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 20,
-  },
-  inputContainer: {
-    marginVertical: 10,
-  },
-  label: {
-    fontSize: 18,
-    fontFamily: 'Mont-regular',
-    marginBottom: 5,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: 'black',
-    padding: 5,
   },
 });
 
