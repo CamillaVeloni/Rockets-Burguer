@@ -1,9 +1,6 @@
-import React, { useCallback, useEffect, useReducer, useRef } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import {
-  View,
-  Text,
   StyleSheet,
-  TextInput,
   ScrollView,
   Platform,
   Alert,
@@ -13,6 +10,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
 import * as menuActions from '../../store/actions/menu';
+import Spinner from '../../components/commons/Spinner';
 import Input from '../../components/commons/Input';
 import DefaultHeaderBtn from '../../components/commons/DefaultHeaderButton';
 
@@ -52,6 +50,10 @@ const formReducer = (state, action) => {
 const EditItemScreen = ({ route, navigation }) => {
   const dispatch = useDispatch(); // dispatch redux
 
+  // States para loading spinner (esperando resposta da api) e para erro na requisição
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
   // Modo Editar Item ~~ passado do dashboard (AdminScreen)
   const itemId = route.params?.itemId ?? null;
   const selectedItem = useSelector(({ menu }) =>
@@ -59,6 +61,9 @@ const EditItemScreen = ({ route, navigation }) => {
   );
 
   // Formulário State ~~ usando reducer
+  // O formulário pelo o state que está dentro do Input component
+  // O formulário é composto pelos valores dos inputs, pela validade de cada input 
+  // e se o formulário como um todo está válido (i.e. usado no submitHandler)
   const [formState, formDispatch] = useReducer(formReducer, {
     inputValues: {
       title: selectedItem?.title ?? '',
@@ -75,7 +80,7 @@ const EditItemScreen = ({ route, navigation }) => {
     isFormValid: selectedItem ? true : false,
   });
 
-  // Handler para os inputs
+  // Handler para os inputs - Input component state
   const inputHandler = useCallback(
     (inputIdentifier, inputValue, isInputValid) => {
       formDispatch({
@@ -88,12 +93,13 @@ const EditItemScreen = ({ route, navigation }) => {
     [formDispatch]
   );
 
-  // Referencias do input (usado no onSubmitEditing)
+  // Referencias do input (usado no onSubmitEditing) - feito para a action de 'próximo'
   const ref_inputUrl = useRef();
   const ref_inputDescription = useRef();
 
   // Handler usado no useEffect para dispachar criar ou editar item
-  const submitHandler = useCallback(() => {
+  const submitHandler = useCallback(async() => {
+    // Usando isFormValid para verificar se possui erro no formulário
     if (!formState.isFormValid) {
       Alert.alert(
         'Erro no formulário!',
@@ -103,31 +109,44 @@ const EditItemScreen = ({ route, navigation }) => {
       return;
     }
 
+    // Pegando action para DEPOIS dispachar
+    let action;
     if (selectedItem) {
       // Editar item do cardapio
-      dispatch(
-        menuActions.updateItem(
-          itemId,
-          formState.inputValues.title,
-          formState.inputValues.imageUrl,
-          formState.inputValues.description
-        )
+      action = menuActions.updateItem(
+        itemId,
+        formState.inputValues.title,
+        formState.inputValues.imageUrl,
+        formState.inputValues.description
       );
     } else {
-      dispatch(
-        menuActions.createItem(
-          formState.inputValues.title,
-          formState.inputValues.imageUrl,
-          formState.inputValues.description,
-          +formState.inputValues.price
-        )
+      action = menuActions.createItem(
+        formState.inputValues.title,
+        formState.inputValues.imageUrl,
+        formState.inputValues.description,
+        +formState.inputValues.price
       );
     }
-    navigation.dispatch(CommonActions.goBack());
+
+    // Dispachando action
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(action);
+      navigation.dispatch(CommonActions.goBack());
+    }catch(e) {
+      setError(e.message);
+    }
+    setIsLoading(false);
   }, [formState, itemId, dispatch]);
 
+  // Mostrando Mensagem de erro se não foi possivel criar ou editar item
   useEffect(() => {
-    // criando options dinamicamente
+    if(error) Alert.alert('Algo deu errado', error, [{ text: 'Okay' }])
+  }, [error]);
+
+  // Criando option na header dinamicamente - Criando salvar no menu
+  useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={DefaultHeaderBtn}>
@@ -143,6 +162,8 @@ const EditItemScreen = ({ route, navigation }) => {
       ),
     });
   }, [submitHandler]);
+
+  if(isLoading) return <Spinner />
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -201,6 +222,7 @@ const EditItemScreen = ({ route, navigation }) => {
   );
 };
 
+// Criando as options da tela (colocado no navigation/StackNavigation)
 export const screenOptions = ({ route }) => {
   const title = route.params?.itemId ? 'Editar' : 'Criar'; // Verificando existe o id para mostrar titulo dinamico
 

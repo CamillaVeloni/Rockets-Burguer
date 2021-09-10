@@ -1,20 +1,26 @@
 import MENU from '../../data/dummy-data';
 import Food from '../../models/Food';
-import { CREATE_ITEM, DELETE_ITEM, UPDATE_ITEM } from '../actions/menu';
+import { FETCHING_MENU, CREATE_ITEM, DELETE_ITEM, UPDATE_ITEM } from '../actions/menu';
 
 const INITIAL_STATE = {
-  availableMenu: MENU,
+  availableMenu: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case FETCHING_MENU: 
+      return {
+        ...state,
+        availableMenu: action.payload,
+      }
     case CREATE_ITEM:
+      const { id, title, imageUrl, description, price } = action.payload;
       const newItem = new Food(
-        new Date().toString(),
-        action.payload.title,
-        action.payload.imageUrl,
-        action.payload.description,
-        action.payload.price
+        id,
+        title,
+        imageUrl,
+        description,
+        price
       );
       return {
         ...state,

@@ -1,13 +1,14 @@
 import React from 'react';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import ReduxThunk from 'redux-thunk';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 import RootReducer from './store/';
 import RootNavigator from './navigation/RootNavigator';
 
-const store = createStore(RootReducer);
+const store = createStore(RootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
   let [fontLoaded] = useFonts({
