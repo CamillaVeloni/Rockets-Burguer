@@ -10,11 +10,12 @@ import DefaultButton from '../../components/commons/DefaultButton';
 import Spinner from '../../components/commons/Spinner';
 import EmptyComponent from '../../components/commons/EmptyComponent';
 
-const MenuList = ({ navigation }) => {
+const MenuOverviewScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  // state para loading data e erro
+  // state para loading data, erro e refresh
   const [isLoading, setIsLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [error, setError] = useState();
 
   const availableMenu = useSelector(({ menu }) => menu.availableMenu);
@@ -24,13 +25,13 @@ const MenuList = ({ navigation }) => {
   // Em useEffect quando tem evento de navegação
   const loadMenu = useCallback(async () => {
     setError(null);
-    setIsLoading(true);
+    setRefresh(true);
     try {
       await dispatch(menuActions.fetchMenu());
     } catch (e) {
       setError(e.message);
     }
-    setIsLoading(false);
+    setRefresh(false);
   }, [setError, setIsLoading, dispatch]);
 
   // Loading Menu qnd entrar na tela dnv (por evento de navegação)
@@ -39,22 +40,23 @@ const MenuList = ({ navigation }) => {
 
     return willFocusSub;
   }, [loadMenu]);
-  
+
   // Loading do Menu inicial (quando o app launch)
   useEffect(() => {
-    loadMenu();
+    setIsLoading(true);
+    loadMenu().then(() => setIsLoading(false));
   }, [dispatch, loadMenu]);
 
   if (isLoading) return <Spinner />;
 
   if (error)
-    return (
-      <EmptyComponent label={error} onRetryPress={() => loadMenu} />
-    );
+    return <EmptyComponent label={error} onRetryPress={() => loadMenu} />;
 
   return (
     <FlatList
       data={availableMenu}
+      refreshing={refresh}
+      onRefresh={loadMenu}
       columnWrapperStyle={{ justifyContent: 'center' }}
       numColumns={2}
       keyExtractor={(item) => item.id}
@@ -95,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MenuList;
+export default MenuOverviewScreen;
