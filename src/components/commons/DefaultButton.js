@@ -14,7 +14,7 @@ const DefaultButton = ({ children, onPress, disabled, styleText, style }) => {
       ]}
       onPress={onPress}
     >
-      <Text style={[styles.textButton, styleText]}>{children}</Text>
+      <Text style={[styles.textDefault, styleText]}>{children}</Text>
     </TouchableOpacity>
   );
 };
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   buttonDisabled: {
     backgroundColor: Colors.grayishColor,
   },
-  textButton: {
+  textDefault: {
     fontFamily: 'Mont-regular',
     fontSize: 15,
     color: 'white',

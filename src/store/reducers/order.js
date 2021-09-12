@@ -1,26 +1,30 @@
 import Order from '../../models/order';
-import { ADD_NEW_ORDER } from '../actions/order';
+import { ADD_NEW_ORDER, SET_ORDERS } from '../actions/order';
 
 const INITIAL_STATE = {
-  orders: [],
   userOrders: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case SET_ORDERS: 
+      return {
+        ...state,
+        userOrders: action.payload,
+      }
+
     case ADD_NEW_ORDER:
-      const { userId, items, amount } = action.payload;
+      const { id, userId, items, amount, date } = action.payload;
       const newOrder = new Order(
-        new Date().toString(),
+        id,
         userId,
         items,
         amount,
-        new Date()
+        date
       );
 
       return {
         ...state,
-        orders: state.orders.concat(newOrder),
         userOrders: state.userOrders.concat(newOrder),
       };
     default:

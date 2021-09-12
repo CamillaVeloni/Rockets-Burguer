@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator();
 const DeliveryNavigator = () => {
   // Dummy para administrador ~~ só para verificar as funcionalidades do admin
   // Obs: depois usar o auth
-  const admin = true;
+  const admin = false;
 
   return (
     <Tab.Navigator
@@ -35,25 +35,7 @@ const DeliveryNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="User"
-        component={UserNavigator}
-        options={{
-          title: 'Pedidos',
-          tabBarIcon: (props) => (
-            <Ionicons
-              name={
-                Platform.OS === 'android'
-                  ? 'md-document-text'
-                  : 'ios-document-text'
-              }
-              size={props.size}
-              color={props.color}
-            />
-          ),
-        }}
-      />
-      {admin && (
+      {admin ? (
         <Tab.Screen
           name="Dashboard"
           component={AdminNavigator}
@@ -61,6 +43,25 @@ const DeliveryNavigator = () => {
             tabBarIcon: (props) => (
               <Ionicons
                 name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
+                size={props.size}
+                color={props.color}
+              />
+            ),
+          }}
+        />
+      ) : (
+        <Tab.Screen
+          name="User"
+          component={UserNavigator}
+          options={{
+            title: 'Pedidos',
+            tabBarIcon: (props) => (
+              <Ionicons
+                name={
+                  Platform.OS === 'android'
+                    ? 'md-document-text'
+                    : 'ios-document-text'
+                }
                 size={props.size}
                 color={props.color}
               />
