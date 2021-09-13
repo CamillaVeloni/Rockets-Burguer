@@ -36,8 +36,13 @@ const Input = (props, ref) => {
   // Handler do input
   const inputChangeHandler = (text) => {
     // Validação antes de usar dispatch
+    const emailRegex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     let isValid = true;
     if (props.required && text.trim().length === 0) {
+      isValid = false;
+    }
+    if (props.email && !emailRegex.test(text.toLowerCase())) {
       isValid = false;
     }
     if (props.min != null && +text < props.min) {
@@ -69,18 +74,18 @@ const Input = (props, ref) => {
 
   return (
     <View style={styles.inputContainer}>
-      <Text style={styles.label}>{props.label}</Text>
+      <Text style={[styles.label], props.labelStyle}>{props.label}</Text>
       <TextInput
         {...props}
         ref={ref}
-        style={styles.input}
+        style={[styles.input, props.inputStyle]}
         onBlur={lostFocusHandler}
         onChangeText={inputChangeHandler}
         value={input.value}
       />
       {!input.isValid && input.touched && (
         <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{props.errorText}</Text>
+          <Text style={[styles.errorText, props.errorStyle]}>{props.errorText}</Text>
         </View>
       )}
     </View>

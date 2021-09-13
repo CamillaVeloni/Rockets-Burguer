@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.grayishColor,
   },
   textDefault: {
+    textAlign: 'center',
     fontFamily: 'Mont-regular',
     fontSize: 15,
     color: 'white',

@@ -33,14 +33,11 @@ const defaultScreenOptions = {
 
 const AuthNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={defaultScreenOptions}>
-      <Stack.Screen
-        name="Auth"
-        component={AuthScreen}
-      />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Auth" component={AuthScreen} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 const MenuNavigator = () => {
   return (
     <Stack.Navigator screenOptions={defaultScreenOptions}>
