@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
+import AuthScreen from '../screens/delivery/AuthScreen';
 import MenuOverviewScreen from '../screens/delivery/MenuOverviewScreen';
 import DetailsFoodScreen, {
   screenOptions as DetailsScreenOptions,
@@ -30,6 +31,16 @@ const defaultScreenOptions = {
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor,
 };
 
+const AuthNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={defaultScreenOptions}>
+      <Stack.Screen
+        name="Auth"
+        component={AuthScreen}
+      />
+    </Stack.Navigator>
+  )
+}
 const MenuNavigator = () => {
   return (
     <Stack.Navigator screenOptions={defaultScreenOptions}>
@@ -110,4 +121,4 @@ const AdminNavigator = ({ navigation }) => {
   );
 };
 
-export { MenuNavigator, UserNavigator, AdminNavigator };
+export { AuthNavigator, MenuNavigator, UserNavigator, AdminNavigator };

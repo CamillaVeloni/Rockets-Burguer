@@ -6,7 +6,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 import RootReducer from './store/';
-import RootNavigator from './navigation/RootNavigator';
+import NavigationContainer from './navigation/NavigationContainer';
 
 const store = createStore(RootReducer, applyMiddleware(ReduxThunk));
 
@@ -21,7 +21,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <RootNavigator />
+      <NavigationContainer />
     </Provider>
   );
 }
