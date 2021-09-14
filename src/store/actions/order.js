@@ -9,7 +9,7 @@ export const fetchOrders = () => {
     const userId = getState().auth.userId;
     //const token = getState().auth.token;
 
-    const resp = await fetch(`${firebaseConfig.databaseURL}/pedidos/${userId}.json`);
+    const resp = await fetch(`${firebaseConfig.databaseURL}/pedidos/NEDpXQj6P4Nnk4CVWqWFbPNu5nX2.json`);
 
     if (!resp.ok) {
       throw new Error(

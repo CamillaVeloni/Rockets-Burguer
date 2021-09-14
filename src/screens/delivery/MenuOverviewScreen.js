@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import { FlatList, Platform, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
-import useFetch from '../../hooks/useFetch';
+import useAction from '../../hooks/useAction';
 import * as menuActions from '../../store/actions/menu';
 import * as cartActions from '../../store/actions/cart';
 import MenuItemCard from '../../components/delivery/MenuItemCard';
@@ -15,7 +15,7 @@ const MenuOverviewScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const availableMenu = useSelector(({ menu }) => menu.availableMenu);
-  const { loading, serverError, refresh, dispatchHandler } = useFetch(menuActions.fetchMenu());
+  const { loading, serverError, refresh, dispatchHandler } = useAction(menuActions.fetchMenu());
   
   if (loading) return <Spinner />;
 

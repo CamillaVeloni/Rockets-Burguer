@@ -2,27 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
+import useAction from '../../hooks/useAction';
 import { fetchOrders } from '../../store/actions/order';
 import OrderCardItem from '../../components/delivery/OrderCardItem';
 import Spinner from '../../components/commons/Spinner';
+import EmptyComponent from '../../components/commons/EmptyComponent';
 
 const OrdersScreen = () => {
-  const dispatch = useDispatch();
   
-  const [isLoading, setIsLoading] = useState(false);
+  const { loading, serverError, dispatchHandler } = useAction(fetchOrders());
+
   const orders = useSelector(({ orders }) => orders.userOrders);
 
-  useEffect(() => {
-    const fetchingOrders = async () => {
-      setIsLoading(true);
-      await dispatch(fetchOrders());
-      setIsLoading(false);
-    }
-
-    fetchingOrders();
-  }, []);
-
-  if(isLoading) return <Spinner />
+  if (loading) return <Spinner />
+  if (serverError)
+    return <EmptyComponent label={serverError} onRetryPress={dispatchHandler} />;
 
   return (
     <FlatList

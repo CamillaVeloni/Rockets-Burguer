@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 // Hook para dispachar ações de 'fetch' com ações, erro e refresh
-const useFetch = (action) => {
+const useAction = (action) => {
   const dispatch = useDispatch();
 
   // state para loading data, erro e refresh
@@ -31,4 +31,4 @@ const useFetch = (action) => {
   return { loading, serverError, refresh, dispatchHandler };
 };
 
-export default useFetch;
+export default useAction;
