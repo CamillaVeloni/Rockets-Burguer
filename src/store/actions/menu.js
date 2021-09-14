@@ -7,7 +7,9 @@ export const UPDATE_ITEM = 'updateItem';
 export const DELETE_ITEM = 'deleteItem';
 
 export const fetchMenu = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    //const token = getState().auth.token;
+
     const resp = await fetch(`${firebaseConfig.databaseURL}/menu.json`);
     
     if (!resp.ok) {
@@ -36,7 +38,9 @@ export const fetchMenu = () => {
 };
 
 export const createItem = (title, imageUrl, description, price) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    //const token = getState().auth.token;
+
     const resp = await fetch(`${firebaseConfig.databaseURL}/menu.json`, {
       method: 'POST',
       headers: {
@@ -72,7 +76,9 @@ export const createItem = (title, imageUrl, description, price) => {
 };
 
 export const updateItem = (id, title, imageUrl, description) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    //const token = getState().auth.token;
+
     const resp = await fetch(`${firebaseConfig.databaseURL}/menu/${id}.json`, {
       method: 'PATCH',
       headers: {
@@ -108,7 +114,9 @@ export const updateItem = (id, title, imageUrl, description) => {
 };
 
 export const deleteItem = (id) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    //const token = getState().auth.token;
+
     const resp = await fetch(`${firebaseConfig.databaseURL}/menu/${id}.json`, {
       method: 'DELETE',
     });

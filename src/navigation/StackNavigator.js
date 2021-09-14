@@ -10,6 +10,7 @@ import DetailsFoodScreen, {
 } from '../screens/delivery/DetailsFoodScreen';
 import CartScreen from '../screens/delivery/CartScreen';
 import OrdersScreen from '../screens/delivery/OrdersScreen';
+import DashboardScreen from '../screens/admin/DashboardScreen';
 import AdminScreen from '../screens/admin/AdminScreen';
 import EditItemScreen, {
   screenOptions as EditScreenOptions,
@@ -88,11 +89,21 @@ const UserNavigator = () => {
   );
 };
 
-const AdminNavigator = ({ navigation }) => {
+const DashboardNavigator = () => {
   return (
     <Stack.Navigator screenOptions={defaultScreenOptions}>
       <Stack.Screen
         name="Dashboard"
+        component={DashboardScreen}
+      />
+    </Stack.Navigator>
+  )
+}
+const AdminNavigator = ({ navigation }) => {
+  return (
+    <Stack.Navigator screenOptions={defaultScreenOptions}>
+      <Stack.Screen
+        name="Admin"
         component={AdminScreen}
         options={{
           headerRight: () => (
@@ -118,4 +129,4 @@ const AdminNavigator = ({ navigation }) => {
   );
 };
 
-export { AuthNavigator, MenuNavigator, UserNavigator, AdminNavigator };
+export { AuthNavigator, MenuNavigator, UserNavigator, AdminNavigator, DashboardNavigator };

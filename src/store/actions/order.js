@@ -5,8 +5,11 @@ export const ADD_NEW_ORDER = 'addNewOrder';
 export const SET_ORDERS = 'setOrders';
 
 export const fetchOrders = () => {
-  return async (dispatch) => {
-    const resp = await fetch(`${firebaseConfig.databaseURL}/pedidos/u1.json`);
+  return async (dispatch, getState) => {
+    const userId = getState().auth.userId;
+    //const token = getState().auth.token;
+
+    const resp = await fetch(`${firebaseConfig.databaseURL}/pedidos/${userId}.json`);
 
     if (!resp.ok) {
       throw new Error(
@@ -20,7 +23,7 @@ export const fetchOrders = () => {
       arrayOrders.push(
         new Order(
           key,
-          'u1',
+          userId,
           realResponse[key].cartItems,
           realResponse[key].totalAmount,
           new Date(realResponse[key].date)
@@ -33,10 +36,13 @@ export const fetchOrders = () => {
 };
 
 export const addNewOrder = (cartItems, totalAmount) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.userId;
+    //const token = getState().auth.token;
+
     const date = new Date();
 
-    const resp = await fetch(`${firebaseConfig.databaseURL}/pedidos/u1.json`, {
+    const resp = await fetch(`${firebaseConfig.databaseURL}/pedidos/${userId}.json`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +66,7 @@ export const addNewOrder = (cartItems, totalAmount) => {
       type: ADD_NEW_ORDER,
       payload: {
         id: realResponse.name,
-        userId: 'u1',
+        userId: userId,
         items: cartItems,
         amount: totalAmount,
         date,

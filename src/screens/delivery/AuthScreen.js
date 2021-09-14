@@ -37,7 +37,7 @@ const authReducer = (state, action) => {
   }
 };
 
-const AuthScreen = () => {
+const AuthScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -102,6 +102,7 @@ const AuthScreen = () => {
     setIsLoading(true);
     try {
       await dispatch(action);
+      navigation.replace('Home');
     } catch (e) {
       console.log(e.message);
       setError(e.message);

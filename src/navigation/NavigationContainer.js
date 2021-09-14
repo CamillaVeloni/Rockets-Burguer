@@ -16,8 +16,8 @@ const RootNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Auth" component={AuthNavigator} />
       <Stack.Screen name="Home" component={DeliveryNavigator} />
+      <Stack.Screen name="Auth" component={AuthNavigator} />
     </Stack.Navigator>
   );
 };

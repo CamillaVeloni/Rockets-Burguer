@@ -3,6 +3,7 @@ import { FlatList, Platform, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
+import useFetch from '../../hooks/useFetch';
 import * as menuActions from '../../store/actions/menu';
 import * as cartActions from '../../store/actions/cart';
 import MenuItemCard from '../../components/delivery/MenuItemCard';
@@ -13,50 +14,19 @@ import EmptyComponent from '../../components/commons/EmptyComponent';
 const MenuOverviewScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  // state para loading data, erro e refresh
-  const [isLoading, setIsLoading] = useState(false);
-  const [refresh, setRefresh] = useState(false);
-  const [error, setError] = useState();
-
   const availableMenu = useSelector(({ menu }) => menu.availableMenu);
+  const { loading, serverError, refresh, dispatchHandler } = useFetch(menuActions.fetchMenu());
+  
+  if (loading) return <Spinner />;
 
-  // Função para 'pegar' o menu do firebase
-  // Usado em useEffect primeiro launch, no retry press quando tem erro
-  // Em useEffect quando tem evento de navegação
-  const loadMenu = useCallback(async () => {
-    setError(null);
-    setRefresh(true);
-    try {
-      await dispatch(menuActions.fetchMenu());
-    } catch (e) {
-      setError(e.message);
-    }
-    setRefresh(false);
-  }, [setError, setIsLoading, dispatch]);
-
-  // Loading Menu qnd entrar na tela dnv (por evento de navegação)
-  useEffect(() => {
-    const willFocusSub = navigation.addListener('focus', loadMenu);
-
-    return willFocusSub;
-  }, [loadMenu]);
-
-  // Loading do Menu inicial (quando o app launch)
-  useEffect(() => {
-    setIsLoading(true);
-    loadMenu().then(() => setIsLoading(false));
-  }, [dispatch, loadMenu]);
-
-  if (isLoading) return <Spinner />;
-
-  if (error)
-    return <EmptyComponent label={error} onRetryPress={() => loadMenu} />;
+  if (serverError)
+    return <EmptyComponent label={serverError} onRetryPress={() => {}} />;
 
   return (
     <FlatList
       data={availableMenu}
       refreshing={refresh}
-      onRefresh={loadMenu}
+      onRefresh={dispatchHandler}
       columnWrapperStyle={{ justifyContent: 'center' }}
       numColumns={2}
       keyExtractor={(item) => item.id}
