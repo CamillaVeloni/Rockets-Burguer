@@ -20,7 +20,7 @@ const MenuOverviewScreen = ({ navigation }) => {
   if (loading) return <Spinner />;
 
   if (serverError)
-    return <EmptyComponent label={serverError} onRetryPress={() => {}} />;
+    return <EmptyComponent label={serverError} onRetryPress={dispatchHandler} />;
 
   return (
     <FlatList
