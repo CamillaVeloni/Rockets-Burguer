@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import useAction from '../../hooks/useAction';
+import useFetch from '../../hooks/useFetch';
 import { fetchOrders } from '../../store/actions/order';
 import OrderCardItem from '../../components/delivery/OrderCardItem';
 import Spinner from '../../components/commons/Spinner';
@@ -10,7 +10,7 @@ import EmptyComponent from '../../components/commons/EmptyComponent';
 
 const OrdersScreen = () => {
   
-  const { loading, serverError, dispatchHandler } = useAction(fetchOrders());
+  const { loading, serverError, dispatchHandler } = useFetch(fetchOrders());
 
   const orders = useSelector(({ orders }) => orders.userOrders);
 

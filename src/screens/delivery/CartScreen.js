@@ -4,7 +4,6 @@ import {
   StyleSheet,
   FlatList,
   Text,
-  ActivityIndicator,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -13,13 +12,14 @@ import * as orderActions from '../../store/actions/order';
 import Spinner from '../../components/commons/Spinner';
 import CartCardItem from '../../components/delivery/CartCardItem';
 import DefaultButton from '../../components/commons/DefaultButton';
-import Colors from '../../constants/Colors';
+import useAction from '../../hooks/useAction';
 
 // Tela carrinho com todas as comidas selecionadas
 const CartScreen = () => {
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(false);
+  //const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, dispatchActionHandler } = useAction();
 
   const cartTotalAmount = useSelector(({ cart }) => cart.totalAmount);
   const cartItems = useSelector(({ cart: { items } }) => {
@@ -69,18 +69,20 @@ const CartScreen = () => {
           Total do Pedido:{' '}
           <Text style={styles.priceOrder}>{cartTotalAmount.toFixed(2)} R$</Text>
         </Text>
-        <DefaultButton
-          disabled={cartItems.length === 0 || isLoading}
-          onPress={onSubmitHandler}
-          style={styles.buttonStyle}
-          styleText={styles.buttonTextStyle}
-        >
-          {!isLoading ? (
-            'Fazer Pedido'
-          ) : (
-            <ActivityIndicator color={Colors.primaryColor} size="small" />
-          )}
-        </DefaultButton>
+        {isLoading ? (
+          <Spinner containerStyle={styles.buttonStyle} />
+        ) : (
+          <DefaultButton
+            disabled={cartItems.length === 0}
+            style={styles.buttonStyle}
+            styleText={styles.buttonTextStyle}
+            onPress={() => {
+              dispatchActionHandler(orderActions.addNewOrder(cartItems, cartTotalAmount));
+            }}
+          >
+            Fazer Pedido
+          </DefaultButton>
+        )}
       </View>
     </View>
   );
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 12,
     marginVertical: 10,
   },
   buttonTextStyle: {
