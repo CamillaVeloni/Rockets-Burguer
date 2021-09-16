@@ -1,14 +1,11 @@
 import React from 'react';
-import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import ReduxThunk from 'redux-thunk';
+import { PersistGate } from 'redux-persist/integration/react';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
-import RootReducer from './store/';
+import { store, persistor } from './store/configureStore';
 import NavigationContainer from './navigation/NavigationContainer';
-
-const store = createStore(RootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
   let [fontLoaded] = useFonts({
@@ -21,7 +18,9 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer />
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer />
+      </PersistGate>
     </Provider>
   );
 }

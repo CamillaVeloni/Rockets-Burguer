@@ -7,21 +7,15 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case SET_ORDERS: 
+    case SET_ORDERS:
       return {
         ...state,
         userOrders: action.payload,
-      }
+      };
 
     case ADD_NEW_ORDER:
       const { id, userId, items, amount, date } = action.payload;
-      const newOrder = new Order(
-        id,
-        userId,
-        items,
-        amount,
-        date
-      );
+      const newOrder = new Order(id, userId, items, amount, date);
 
       return {
         ...state,

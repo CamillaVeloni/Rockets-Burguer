@@ -12,8 +12,6 @@ import DefaultButton from '../../components/commons/DefaultButton';
 import MenuItemCard from '../../components/delivery/MenuItemCard';
 
 const AdminScreen = ({ navigation }) => {
-  //const dispatch = useDispatch();
-
   
   const availableMenu = useSelector(({ menu }) => menu.availableMenu);
   

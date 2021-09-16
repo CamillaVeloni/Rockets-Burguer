@@ -1,6 +1,6 @@
 import React, { useState, useReducer, useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
 import * as authActions from '../../store/actions/auth';
@@ -40,6 +40,8 @@ const authReducer = (state, action) => {
 const AuthScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
+  const token = useSelector(({ auth }) => auth.token);
+  
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [isSignup, setIsSignup] = useState(false);
@@ -67,6 +69,11 @@ const AuthScreen = ({ navigation }) => {
     },
     [authDispatch]
   );
+
+  useEffect(() => {
+    if(token) console.log('existe')
+    if(!token) console.log('nada aqui bestie')
+  }, []);
 
   useEffect(() => {
     if(error) {

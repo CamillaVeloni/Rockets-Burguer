@@ -8,9 +8,9 @@ export const DELETE_ITEM = 'deleteItem';
 
 export const fetchMenu = () => {
   return async (dispatch, getState) => {
-    //const token = getState().auth.token;
+    const token = getState().auth.token;
 
-    const resp = await fetch(`${firebaseConfig.databaseURL}/menu.json`);
+    const resp = await fetch(`${firebaseConfig.databaseURL}/menu.json?auth=${token}`);
     
     if (!resp.ok) {
       throw new Error(
@@ -39,9 +39,9 @@ export const fetchMenu = () => {
 
 export const createItem = (title, imageUrl, description, price) => {
   return async (dispatch, getState) => {
-    //const token = getState().auth.token;
+    const token = getState().auth.token;
 
-    const resp = await fetch(`${firebaseConfig.databaseURL}/menu.json`, {
+    const resp = await fetch(`${firebaseConfig.databaseURL}/menu.json?auth=${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -77,9 +77,9 @@ export const createItem = (title, imageUrl, description, price) => {
 
 export const updateItem = (id, title, imageUrl, description) => {
   return async (dispatch, getState) => {
-    //const token = getState().auth.token;
+    const token = getState().auth.token;
 
-    const resp = await fetch(`${firebaseConfig.databaseURL}/menu/${id}.json`, {
+    const resp = await fetch(`${firebaseConfig.databaseURL}/menu/${id}.json?auth=${token}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -115,9 +115,9 @@ export const updateItem = (id, title, imageUrl, description) => {
 
 export const deleteItem = (id) => {
   return async (dispatch, getState) => {
-    //const token = getState().auth.token;
+    const token = getState().auth.token;
 
-    const resp = await fetch(`${firebaseConfig.databaseURL}/menu/${id}.json`, {
+    const resp = await fetch(`${firebaseConfig.databaseURL}/menu/${id}.json?auth=${token}`, {
       method: 'DELETE',
     });
 
