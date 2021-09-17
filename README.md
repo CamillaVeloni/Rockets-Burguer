@@ -1,7 +1,7 @@
 # Rockets Burguer app
 
 Projeto de Aplicativo de hamburgueria.
-Utlizando Redux, Redux Persist, AsyncStorage e React Native Keychain para armazenar states na memória, carrinho de compra no AsyncStorage usando Redux Persist e React Native Keychain para armazenar idToken e localId do Firebase
+Utlizando Redux, Redux Persist, AsyncStorage e React Native Keychain para armazenar states na memória, carrinho de compra no AsyncStorage usando Redux Persist e Expo Secure Store para armazenar idToken e localId do Firebase
 
 Requisitos funcionais para usuário: 
 1. Autenticação no aplicativo;
