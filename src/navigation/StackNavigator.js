@@ -2,7 +2,9 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { useDispatch } from 'react-redux';
 
+import { logoutUser } from '../store/actions/auth';
 import AuthScreen from '../screens/delivery/AuthScreen';
 import MenuOverviewScreen from '../screens/delivery/MenuOverviewScreen';
 import DetailsFoodScreen, {
@@ -99,7 +101,10 @@ const DashboardNavigator = () => {
     </Stack.Navigator>
   )
 }
+
 const AdminNavigator = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   return (
     <Stack.Navigator screenOptions={defaultScreenOptions}>
       <Stack.Screen
@@ -115,6 +120,17 @@ const AdminNavigator = ({ navigation }) => {
                   Platform.OS === 'android' ? 'md-create' : 'ios-create'
                 }
                 onPress={() => navigation.navigate('EditItem')}
+              />
+              <Item
+                title="Logout"
+                iconSize={23}
+                iconName={
+                  Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'
+                }
+                onPress={() => {
+                  dispatch(logoutUser());
+                  //navigation.replace('Auth');
+                }}
               />
             </HeaderButtons>
           ),

@@ -39,8 +39,6 @@ const authReducer = (state, action) => {
 
 const AuthScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-
-  const token = useSelector(({ auth }) => auth.token);
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
@@ -69,11 +67,6 @@ const AuthScreen = ({ navigation }) => {
     },
     [authDispatch]
   );
-
-  useEffect(() => {
-    if(token) console.log('existe')
-    if(!token) console.log('nada aqui bestie')
-  }, []);
 
   useEffect(() => {
     if(error) {
@@ -109,7 +102,7 @@ const AuthScreen = ({ navigation }) => {
     setIsLoading(true);
     try {
       await dispatch(action);
-      navigation.replace('Home');
+      //navigation.replace('Home');
     } catch (e) {
       console.log(e.message);
       setError(e.message);

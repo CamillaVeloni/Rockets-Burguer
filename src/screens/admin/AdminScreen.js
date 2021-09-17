@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CommonActions } from '@react-navigation/native';
 import { Alert, FlatList, Platform } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
 import useFetch from '../../hooks/useFetch';
@@ -10,13 +10,14 @@ import * as actionsMenu from '../../store/actions/menu';
 import Spinner from '../../components/commons/Spinner';
 import DefaultButton from '../../components/commons/DefaultButton';
 import MenuItemCard from '../../components/delivery/MenuItemCard';
+import EmptyComponent from '../../components/commons/EmptyComponent';
 
 const AdminScreen = ({ navigation }) => {
   
   const availableMenu = useSelector(({ menu }) => menu.availableMenu);
   
   // Usando custom hooks para utilizar dispatch
-  const { loading, serverError, dispatchHandler } = useFetch(actionsMenu.fetchMenu());
+  const { refresh, loading, serverError, dispatchHandler } = useFetch(actionsMenu.fetchMenu());
   const { isLoading, error, dispatchActionHandler } = useAction();
 
   // Usando useEffect para mostrar alerta de erro (i.e. state error)
@@ -54,6 +55,8 @@ const AdminScreen = ({ navigation }) => {
   return (
     <FlatList
       data={availableMenu}
+      refreshing={refresh}
+      onRefresh={dispatchHandler}
       columnWrapperStyle={{ justifyContent: 'center' }}
       numColumns={2}
       keyExtractor={(item) => item.id}
