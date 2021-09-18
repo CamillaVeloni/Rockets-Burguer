@@ -19,6 +19,7 @@ const useAction = () => {
       await dispatch(action);
     } catch (e) {
       setError(e.message);
+      console.log(e.message);
     }
 
     setIsLoading(false);

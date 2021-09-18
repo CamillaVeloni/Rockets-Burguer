@@ -37,7 +37,7 @@ const authReducer = (state, action) => {
   }
 };
 
-const AuthScreen = ({ navigation }) => {
+const AuthScreen = () => {
   const dispatch = useDispatch();
   
   const [isLoading, setIsLoading] = useState(false);
@@ -102,7 +102,7 @@ const AuthScreen = ({ navigation }) => {
     setIsLoading(true);
     try {
       await dispatch(action);
-      //navigation.replace('Home');
+      // Vai logar automaticamente dps disso
     } catch (e) {
       console.log(e.message);
       setError(e.message);

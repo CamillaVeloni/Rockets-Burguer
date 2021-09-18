@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Text,
-} from 'react-native';
+import { View, StyleSheet, FlatList, Text } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import * as cartActions from '../../store/actions/cart';
@@ -42,9 +37,7 @@ const CartScreen = () => {
   };
 
   const onSubmitHandler = async () => {
-    setIsLoading(true);
-    await dispatch(orderActions.addNewOrder(cartItems, cartTotalAmount));
-    setIsLoading(false);
+    dispatchActionHandler(orderActions.addNewOrder(cartItems, cartTotalAmount));
   };
 
   return (
@@ -76,9 +69,7 @@ const CartScreen = () => {
             disabled={cartItems.length === 0}
             style={styles.buttonStyle}
             styleText={styles.buttonTextStyle}
-            onPress={() => {
-              dispatchActionHandler(orderActions.addNewOrder(cartItems, cartTotalAmount));
-            }}
+            onPress={onSubmitHandler}
           >
             Fazer Pedido
           </DefaultButton>

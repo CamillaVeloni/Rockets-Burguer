@@ -38,7 +38,7 @@ export const fetchOrders = () => {
 export const addNewOrder = (cartItems, totalAmount) => {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
-    //const token = getState().auth.token;
+    const token = getState().auth.token;
 
     const date = new Date();
 

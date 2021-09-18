@@ -32,14 +32,6 @@ const RootNavigator = () => {
 };
 
 const NavContainer = () => {
-  /*  const navRef = useRef();
-
-  const isAuth = useSelector(({ auth }) => !!auth.token);
-  useEffect(() => {
-    if (!isAuth)
-      navRef.current.dispatch(Comm.navigate({ routeName: 'Auth'}))
-  }, [isAuth]);  */
-
   return (
     <NavigationContainer>
       <RootNavigator />

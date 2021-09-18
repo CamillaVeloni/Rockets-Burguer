@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 
 // Tabs dos usuários e do admin 
 const DeliveryNavigator = () => {
-  const admin = true;
+  const admin = false;
 
   return (
     <Tab.Navigator

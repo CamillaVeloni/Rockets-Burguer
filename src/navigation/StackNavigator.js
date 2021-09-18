@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useDispatch } from 'react-redux';
@@ -78,6 +78,7 @@ const MenuNavigator = () => {
 };
 
 const UserNavigator = () => {
+  const dispatch = useDispatch();
   return (
     <Stack.Navigator screenOptions={defaultScreenOptions}>
       <Stack.Screen
@@ -85,6 +86,29 @@ const UserNavigator = () => {
         component={OrdersScreen}
         options={{
           headerTitle: 'Meus Pedidos',
+          headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={DefaultHeaderButton}>
+              <Item
+                title="Logout"
+                iconSize={23}
+                iconName={
+                  Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'
+                }
+                onPress={() => {
+                  Alert.alert('Você realmente quer deslogar?', null, [
+                    { text: 'Não', style: 'cancel' },
+                    {
+                      text: 'Sim',
+                      onPress: () => {
+                        dispatch(logoutUser());
+                        // Vai deslogar automaticamente dps disso
+                      },
+                    },
+                  ]);
+                }}
+              />
+            </HeaderButtons>
+          ),
         }}
       />
     </Stack.Navigator>
@@ -94,13 +118,10 @@ const UserNavigator = () => {
 const DashboardNavigator = () => {
   return (
     <Stack.Navigator screenOptions={defaultScreenOptions}>
-      <Stack.Screen
-        name="Dashboard"
-        component={DashboardScreen}
-      />
+      <Stack.Screen name="Dashboard" component={DashboardScreen} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const AdminNavigator = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -128,8 +149,16 @@ const AdminNavigator = ({ navigation }) => {
                   Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'
                 }
                 onPress={() => {
-                  dispatch(logoutUser());
-                  //navigation.replace('Auth');
+                  Alert.alert('Você realmente quer deslogar?', null, [
+                    { text: 'Não', style: 'cancel' },
+                    {
+                      text: 'Sim',
+                      onPress: () => {
+                        dispatch(logoutUser());
+                        // Vai deslogar automaticamente dps disso
+                      },
+                    },
+                  ]);
                 }}
               />
             </HeaderButtons>
@@ -145,4 +174,10 @@ const AdminNavigator = ({ navigation }) => {
   );
 };
 
-export { AuthNavigator, MenuNavigator, UserNavigator, AdminNavigator, DashboardNavigator };
+export {
+  AuthNavigator,
+  MenuNavigator,
+  UserNavigator,
+  AdminNavigator,
+  DashboardNavigator,
+};
